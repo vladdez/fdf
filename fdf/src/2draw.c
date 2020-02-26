@@ -12,10 +12,17 @@
 
 #include "fdf.h"
 
+float   ft_fabs(float x)
+{
+    if (x < 0)
+        x = x * -1;
+    return (x);
+}
+
 void    isometric(float *x, float *y, int z)
 {
-    *x = (*x + *y) * cos(0.5123);
-    *y = ((*x + *y) * sin(0.5123)) - z;
+    *x = (*x - *y) * cos(0.523599);
+    *y = ((*x + *y) * sin(0.523599)) - z;
 }
 
 void    bresenham(float x, float y, float x1, float y1, fdf *data)
@@ -36,8 +43,8 @@ void    bresenham(float x, float y, float x1, float y1, fdf *data)
 
     data->color = (z || z1) ? 0xe80c0c : 0xffffff;
 
-   // isometric(&x, &y, z);
-   // isometric(&x1, &y1, z1);
+    isometric(&x, &y, z);
+    isometric(&x1, &y1, z1);
 
     x += data->shift_x;
     y += data->shift_y;
@@ -47,15 +54,17 @@ void    bresenham(float x, float y, float x1, float y1, fdf *data)
     x_step = x1 - x;
     y_step = y1 - y;
 
-    if (fabsf(x_step) > fabsf(y_step))
-        max = x_step;
+    if (ft_fabs(x_step) > ft_fabs(y_step))
+        max = ft_fabs(x_step);
     else
-        max = y_step;
+        max = ft_fabs(y_step);
 
     x_step /= max;
     y_step /= max;
+    printf("---%f\n", x_step);
     while ((int)(x - x1) || (int)(y - y1))
     {
+        
         mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, data->color);
         x += x_step;
         y += y_step;

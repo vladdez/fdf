@@ -12,6 +12,40 @@
 
 #include "fdf.h"
 
+fdf     *create_str()
+{
+    fdf *data;
+
+    if (!(data = (fdf*)malloc(sizeof(fdf))))
+        return (NULL);
+    data->w = 0;
+    data->h = 0;
+    data->z = NULL;
+    data->zoom = 0;
+    data->color = 0;
+    data->shift_x = 0;
+    data->shift_y = 0;
+
+    data->mlx_ptr = NULL;
+    data->win_ptr = NULL;
+    return (data);
+}
+
+void    clean_str(fdf *data)
+{
+    data->w = 0;
+    data->h = 0;
+    data->z = NULL;
+    data->zoom = 0;
+    data->color = 0;
+    data->shift_x = 0;
+    data->shift_y = 0;
+
+    data->mlx_ptr = NULL;
+    data->win_ptr = NULL;
+    free (data);
+}
+
 int     deal_key(int key, fdf *data)
 {
     ft_printf("%d\n", key);
@@ -35,7 +69,7 @@ int main(int ac, char **av)
     data = NULL;
     if (ac > 1)
     {
-        data = (fdf*)malloc(sizeof(fdf));
+        data = create_str();
         data->zoom = 20;
         read_file(av[1], data);
         data->mlx_ptr = mlx_init();
@@ -43,6 +77,7 @@ int main(int ac, char **av)
         draw(data);
         mlx_key_hook(data->win_ptr, deal_key, data);
         mlx_loop(data->mlx_ptr);
+        clean_str(data);
     }
 }
 
