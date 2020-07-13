@@ -1,1 +1,0 @@
-gcc -Wall -Wextra -Werror -c main.c 1parce_file.c -L ft
